@@ -8,7 +8,7 @@
   "botonBici": "1",
   "botonCaña": "5",
   "botonAroma": "7",
-  "vecesAroma": 6,
+  "vecesAroma": 3,
   "check_salvaje": "assets/checkSalvaje.png",
   "ciudad_ladrillo": "assets/ciudadLadrillo.png",
   "imagen_referencia": "assets/identificadorFucsia.png",

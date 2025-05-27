@@ -14,6 +14,7 @@ from utils import log_message, encontrar_ventana_juego
 # Variable de control global para la ejecución de automatizaciones
 running = False
 
+
 def sleep_check(duration):
     """
     Duerme en pequeños intervalos, verificando en cada paso que 'running' sea True.
@@ -33,25 +34,36 @@ def irFucsia():
         log_message("❌ El juego no está abierto o el nombre es incorrecto.")
         return False
 
-    if not ventana_juego.isMinimized:
-        try:
-            ventana_juego.activate()
-            if not sleep_check(1):
+    # 1) Restaurar si está minimizada
+    # 2) Activar siempre para traerla al frente
+    try:
+        if ventana_juego.isMinimized:
+            ventana_juego.restore()
+            if not sleep_check(0.5):
                 return False
-        except Exception as e:
-            log_message(f"⚠ Error al activar la ventana: {e}")
-            return False
 
-    if not ventana_juego.isActive:
-        log_message("❌ La ventana del juego no está activa.")
+        ventana_juego.activate()
+        if not sleep_check(1):
+            return False
+    except Exception as e:
+        log_message(f"⚠ Error al restaurar/activar la ventana: {e}")
         return False
 
+    # 3) Verificar que realmente obtuvo el foco
+    if not ventana_juego.isActive:
+        log_message("❌ La ventana del juego no está activa después de activate().")
+        return False
+
+    # Damos un pequeño margen antes de empezar
     if not sleep_check(1):
         return False
+
+    # Ya con la ventana en primer plano, enviamos el click inicial
     pyautogui.leftClick()
     if not sleep_check(1):
         return False
 
+    # Pulsar tecla de vuelo y movernos
     keyboard.press_and_release(config.botonVuelo)
     log_message(f"✅ Tecla '{config.botonVuelo}' enviada al juego.")
     if not sleep_check(0.3):
@@ -77,6 +89,7 @@ def irFucsia():
         log_message("✅ Estamos en la ciudad correcta.")
     log_message("✅ Movimiento completado.")
     return True
+
 
 # Envía todos los inputs necesarios para movernos hasta la zona safari
 def movimientoSafari():
@@ -370,21 +383,27 @@ def irLadrillo():
         log_message("❌ El juego no está abierto o el nombre es incorrecto.")
         return False
 
-    if not ventana_juego.isMinimized:
-        try:
-            ventana_juego.activate()
-            if not sleep_check(1):
+    # Restaurar/activar igual que en irFucsia
+    try:
+        if ventana_juego.isMinimized:
+            ventana_juego.restore()
+            if not sleep_check(0.5):
                 return False
-        except Exception as e:
-            log_message(f"⚠ Error al activar la ventana: {e}")
+
+        ventana_juego.activate()
+        if not sleep_check(1):
             return False
+    except Exception as e:
+        log_message(f"⚠ Error al restaurar/activar la ventana: {e}")
+        return False
 
     if not ventana_juego.isActive:
-        log_message("❌ La ventana del juego no está activa.")
+        log_message("❌ La ventana del juego no está activa después de activate().")
         return False
 
     if not sleep_check(1):
         return False
+
     pyautogui.leftClick()
     if not sleep_check(1):
         return False

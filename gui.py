@@ -279,7 +279,7 @@ def build_main_gui(root):
 # ----------------------------------------------------------------------
 def main_app():
     root = tb.Window(themename="darkly")
-    root.title("Automatización PokeMMO")
+    root.title("PokeFarm")
     root.geometry("700x500")
     root.option_add("*Font", ("Segoe UI", 10))
     root.withdraw()
